@@ -11,7 +11,7 @@ services:
     ports:
       - 9171:9171
     environment:
-      - REPOS=RTimaure/dora-demo
+      - REPOS=x-heep/x-heep
       - GITHUB_TOKEN=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
     command: ["--web.listen-address=:9171"]
     networks:
