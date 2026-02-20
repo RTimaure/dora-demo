@@ -1,0 +1,33 @@
+
+services:
+  github-exporter:
+    image: mjbelda/github-exporter-dora:1.0.0
+    container_name: github-exporter
+    hostname: github-exporter
+    tty: true
+    stdin_open: true
+    expose:
+      - 9171
+    ports:
+      - 9171:9171
+    environment:
+      - REPOS=[USUARIO/REPOSITORIO]
+      - GITHUB_TOKEN=[GITHUB_PAT]
+    command: ["--web.listen-address=:9171"]
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    depends_on:
+      - github-exporter
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
